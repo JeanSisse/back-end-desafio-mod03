@@ -30,7 +30,7 @@ const login = async (req, res) => {
       expiresIn: '12h'
     });
 
-    return res.status(200).json(token);
+    return res.status(200).json({ token });
   } catch (error) {
     return res.status(400).json({ mensagem: error.message });
   }

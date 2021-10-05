@@ -12,10 +12,6 @@ const verificarAutenticacao = async (req, res, next) => {
   try {
     const token = authorization.replace('Bearer', '').trim();
 
-    if (token === 'undefined') {
-      return res.status(403).json({ mensagem: 'Para acessar este recurso um token de autenticação válido deve ser enviado.' });
-    }
-
     const { id } = jwt.verify(token, segredo);
 
     const querySelect = 'select * from usuarios where id = $1';
