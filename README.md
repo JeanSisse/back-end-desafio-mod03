@@ -2,7 +2,7 @@
 
 # Desafio Módulo 3 - Back-end
 
-Seu papel é construir uma RESTful API que permita:
+Objetivo deste desafio é construir uma RESTful API que permita:
 
 - Fazer Login
 - Cadastrar Usuário
@@ -15,11 +15,9 @@ Seu papel é construir uma RESTful API que permita:
 - Remover produtos
 - **EXTRA:** Filtrar produtos por categoria
 
-**Importante: Lembre-se sempre que cada usuário só pode ver e manipular seus próprios dados e seus próprios produtos. Não atender a este pré-requisito é uma falha de segurança gravíssima!**
+**Cada usuário só pode ver e manipular seus próprios dados e seus próprios produtos. Não atender a este pré-requisito é uma falha de segurança gravíssima!**
 
-**Importante 2: O diretório ".github" e seu conteúdo não podem ser alterados e muito menos excluídos**
-
-**Importante 3: Sempre que a validação de uma requisição falhar, responda com código de erro e mensagem adequada à situação, ok?**
+**Sempre que a validação de uma requisição falhar, o usuário receberá uma responda com código de erro e mensagem adequada à situação.**
 
 **Exemplo:**
 
@@ -33,7 +31,7 @@ Seu papel é construir uma RESTful API que permita:
 
 ## **Banco de dados**
 
-Você precisa criar um Banco de Dados PostgreSQL chamado `market_cubos` contendo as seguintes tabelas e colunas:  
+Foi criado um Banco de Dados PostgreSQL chamado `market_cubos` para este desafio contendo as seguintes tabelas e colunas:  
 **ATENÇÃO! Os nomes das tabelas e das colunas a serem criados devem seguir exatamente os nomes listados abaixo.**
 
 - usuarios
@@ -52,21 +50,20 @@ Você precisa criar um Banco de Dados PostgreSQL chamado `market_cubos` contendo
   - descricao
   - imagem (campo texto para URL da imagem na web)
 
-**IMPORTANTE: Na raiz do seu repositório forkado deverá ser criado um arquivo SQL que deverá ser o script que cria as tabelas corretamente.**
+**Na raiz deste projeto foi criado um arquivo SQL que é o script que cria as tabelas corretamente.**
 
 ## **Requisitos obrigatórios**
 
 - A API a ser criada deverá acessar o banco de dados a ser criado "market_cubos" para persistir e manipular os dados de usuários e produtos utilizados pela aplicação.
 - O campo `id` das tabelas no banco de dados deve ser auto incremento, chave primária e não deve permitir edição uma vez criado.
-- Seu código deverá estar organizado, delimitando as responsabilidades de cada arquivo adequadamente. Ou seja, é esperado que ele tenha, no mínimo:
+- Este projeto foi organizado, delimitando as responsabilidades de cada arquivo adequadamente. Ou seja, ele conta com organização mínima como segue:
   - Um arquivo index.js
   - Um arquivo servidor.js
   - Um arquivo conexao.js
   - Um arquivo de rotas
   - Um pasta com controladores  
-    **ATENÇÃO!: os arquivos iniciais** já existentes neste repositório original (index.js, servidor.js e conexao.js) **não deverão ser renomeados e nem movidos dentro da estrutura de pastas do projeto**. O arquivo **conexao.js** deverá ser alterado **apenas** os valores das propriedades que definem **as credenciais de acesso** ao seu banco de dados.
+    
 - Qualquer valor monetário deverá ser representado em centavos (Ex.: R$ 10,00 reais = 1000)
-- Evite códigos duplicados. Antes de copiar e colar, pense se não faz sentido esse pedaço de código estar centralizado numa função.
 
 ## **Status Codes**
 
@@ -100,8 +97,8 @@ Essa é a rota que será utilizada para cadastrar um novo usuario no sistema.
   - nome_loja
 
 - **Resposta**  
-  Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
+  Em caso de **sucesso**, nenhum conteúdo é enviado no corpo (body) da resposta.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** contendo  como valor um texto explicando o motivo da falha.
 
 - **REQUISITOS OBRIGATÓRIOS**
   - Validar os campos obrigatórios:
@@ -153,17 +150,17 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
   - senha
 
 - **Resposta**  
-  Em caso de **sucesso**, o corpo (body) da resposta deverá possuir um objeto com apenas uma propriedade **token** que deverá possuir como valor o token de autenticação gerado.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.
+  Em caso de **sucesso**, o corpo (body) da resposta retorna com um objeto com apenas uma propriedade **token** que possui como valor o token de autenticação gerado.  
+  Em caso de **falha na validação**, a resposta retorna um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** contendo como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**
+- **FUNCIONALIDADES**
 
-  - Validar os campos obrigatórios:
+  - Validação dos campos:
     - email
     - senha
-  - Verificar se o e-mail existe
-  - Validar e-mail e senha
-  - Criar token de autenticação com id do usuário
+  - Verifica se o e-mail existe
+  - Valida e-mail e senha
+  - Cria token de autenticação com id do usuário
 
 #### **Exemplo de requisição**
 
@@ -193,33 +190,32 @@ Essa é a rota que permite o usuario cadastrado realizar o login no sistema.
 
 ---
 
-## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, deverão exigir o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, em cada funcionalidade será necessário validar o token informado.
+## **ATENÇÃO**: Todas as funcionalidades (endpoints) a seguir, a partir desse ponto, exigem o token de autenticação do usuário logado, recebendo no header com o formato Bearer Token. Portanto, para cada funcionalidade a partir deste é realizado a validação do token informado.
 
 ---
 
 ### **Validações do token**
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - Validar se o token foi enviado no header da requisição (Bearer Token)
-  - Verificar se o token é válido
-  - Consultar usuário no banco de dados pelo id contido no token informado
+- **FUNCIONALIDADES**
+  - Verifica se o token foi enviado no header da requisição (Bearer Token)
+  - Verifica se o token é válido
+  - Consulta o usuário no banco de dados pelo id contido no token informado
 
 ### **Detalhar usuário**
 
 #### `GET` `/usuario`
 
-Essa é a rota que será chamada quando o usuario quiser obter os dados do seu próprio perfil.  
-**Atenção!:** O usuário deverá ser identificado através do ID presente no token de autenticação.
+Essa é a rota chamada quando o usuario quiser obter os dados do seu próprio perfil.  
+**Atenção!:** O usuário é identificado através do ID presente no token de autenticação.
 
 - **Requisição**  
   Sem parâmetros de rota ou de query.  
   Não deverá possuir conteúdo no corpo da requisição.
 
 - **Resposta**  
-  Em caso de **sucesso**, o corpo (body) da resposta deverá possuir um objeto que representa o usuário encontrado, com todas as suas propriedades (exceto a senha), conforme exemplo abaixo, acompanhado de **_status code_** apropriado.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint podemos fazer uso do status code 401 (Unauthorized).
-
+  Em caso de **sucesso**, o corpo (body) da resposta possui um objeto que representa o usuário encontrado, com todas as suas propriedades (exceto a senha), conforme exemplo abaixo, acompanhado de **_status code_** apropriado.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** possui como valor um texto explicando o motivo da falha.  
+  
 #### **Exemplo de requisição**
 
 ```json
@@ -250,8 +246,8 @@ Essa é a rota que será chamada quando o usuario quiser obter os dados do seu p
 
 #### `PUT` `/usuario`
 
-Essa é a rota que será chamada quando o usuário quiser realizar alterações no seu próprio usuário.  
-**Atenção!:** O usuário deverá ser identificado através do ID presente no token de autenticação.
+Essa é a rota chamada quando o usuário quiser realizar alterações no seu próprio usuário.  
+**Atenção!:** O usuário é identificado através do ID presente no token de autenticação.
 
 - **Requisição**  
   Sem parâmetros de rota ou de query.  
@@ -263,20 +259,19 @@ Essa é a rota que será chamada quando o usuário quiser realizar alterações 
   - nome_loja
 
 - **Resposta**  
-  Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint podemos fazer uso do status code 401 (Unauthorized)
+  Em caso de **sucesso**, não será retornado conteúdo no corpo (body) da resposta.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) possui um objeto com uma propriedade **mensagem** que possui como valor um texto explicando o motivo da falha.  
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - Validar os campos obrigatórios:
+- **FUNCIONALIDADES**
+  - Validação dos campos obrigatórios:
     - nome
     - email
     - senha
     - nome_loja
-  - Validar se o novo e-mail já existe no banco de dados para outro usuário
-    - Caso já exista o novo e-mail fornecido para outro usuário no banco de dados, a alteração não deve ser permitida (o campo de email deve ser sempre único no banco de dados)
-  - Criptografar a senha antes de salvar no banco de dados
-  - Atualizar as informações do usuário no banco de dados
+  - Valida se o novo e-mail já existe no banco de dados para outro usuário
+    - Caso já exista o novo e-mail fornecido para outro usuário no banco de dados, a alteração não é permitida (o campo de email deve ser sempre único no banco de dados)
+  - Criptografa a senha antes de salvar no banco de dados
+  - Atualiza as informações do usuário no banco de dados
 
 #### **Exemplo de requisição**
 
@@ -308,21 +303,20 @@ Essa é a rota que será chamada quando o usuário quiser realizar alterações 
 
 #### `GET` `/produtos`
 
-Essa é a rota que será chamada quando o usuario logado quiser listar todos os seus produtos cadastrados.  
-**Lembre-se:** Deverão ser retornados **apenas** produtos associados ao usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Essa é a rota chamada quando o usuario logado quiser listar todos os seus produtos cadastrados.  
+**Lembre-se:** será retornado **apenas** produtos associados ao usuário logado, que será identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Sem parâmetros de rota ou de query.  
   Não deverá possuir conteúdo no corpo (body) da requisição.
 
 - **Resposta**  
-  Em caso de **sucesso**, o corpo (body) da resposta deverá possuir um array dos objetos (produtos) encontrados.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint podemos fazer uso do status code 401 (Unauthorized).
+  Em caso de **sucesso**, o corpo (body) da resposta possui um array dos objetos (produtos) encontrados.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que  possui como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - O usuário deverá ser identificado através do ID presente no token de validação
-  - O endpoint deverá responder com um array de todos os produtos associados ao usuário. Caso não exista nenhum produto associado ao usuário deverá responder com array vazio.
+- **FUNCIONALIDADES: **
+  - O usuário é identificado através do ID presente no token de validação
+  - O endpoint responde com um array de todos os produtos associados ao usuário. Caso não exista nenhum produto associado ao usuário é retornado um array vazio.
 
 #### **Exemplo de requisição**
 
@@ -375,20 +369,19 @@ Essa é a rota que será chamada quando o usuario logado quiser listar todos os 
 
 #### `GET` `/produtos/:id`
 
-Essa é a rota que será chamada quando o usuario logado quiser obter um dos seus produtos cadastrados.  
-**Lembre-se:** Deverá ser retornado **apenas** produto associado ao usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Essa é a rota é chamada quando o usuario logado quiser obter um dos seus produtos cadastrados.  
+**Lembre-se:** será retornado **apenas** produto associado ao usuário logado, que será ser identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Deverá ser enviado o ID do produto no parâmetro de rota do endpoint.  
   O corpo (body) da requisição não deverá possuir nenhum conteúdo.
 
 - **Resposta**  
-  Em caso de **sucesso**, o corpo (body) da resposta deverá possuir um objeto que representa o produto encontrado, com todas as suas propriedades, conforme exemplo abaixo, acompanhado de **_status code_** apropriado.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint é possível utilizar os **_status codes_** 401 (Unauthorized) e 403 (Forbidden), além dos outros mais comuns que costumamos utilizar.
+  Em caso de **sucesso**, o corpo (body) da resposta possui um objeto que representa o produto encontrado, com todas as suas propriedades, conforme exemplo abaixo, acompanhado de **_status code_** apropriado.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que  possui como valor um texto explicando o motivo da falha.  
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - Validar se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
+- **FUNCIONALIDADES:**
+  - Valida se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
 
 #### **Exemplo de requisição**
 
@@ -431,8 +424,8 @@ Essa é a rota que será chamada quando o usuario logado quiser obter um dos seu
 
 #### `POST` `/produtos`
 
-Essa é a rota que será utilizada para cadastrar um produto associado ao usuário logado.  
-**Lembre-se:** Deverá ser possível cadastrar **apenas** produtos associados ao próprio usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Essa é a rota utilizada para cadastrar um produto associado ao usuário logado.  
+**Lembre-se:** possível cadastrar **apenas** produtos associados ao próprio usuário logado, que será identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Sem parâmetros de rota ou de query.  
@@ -446,18 +439,17 @@ Essa é a rota que será utilizada para cadastrar um produto associado ao usuár
   - imagem
 
 - **Resposta**  
-  Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint podemos fazer uso do status code 401 (Unauthorized).
+  Em caso de **sucesso**, não é enviado conteúdo no corpo (body) da resposta.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que possui como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - Validar os campos obrigatórios:
+- **FUNCIONALIDADES:**
+  - Validação os campos obrigatórios:
     - nome
     - quantidade
     - preco
     - descricao
-  - Validar se a quantidade do produto é maior que zero.
-  - Cadastrar o produto associado ao usuário logado.
+  - Valida se a quantidade do produto é maior que zero.
+  - Cadastra o produto associado ao usuário logado.
 
 #### **Exemplo de requisição**
 
@@ -498,8 +490,8 @@ Essa é a rota que será utilizada para cadastrar um produto associado ao usuár
 
 #### `PUT` `/produtos/:id`
 
-Essa é a rota que será chamada quando o usuario logado quiser atualizar um dos seus produtos cadastrados.  
-**Lembre-se:** Deverá ser possível atualizar **apenas** produtos associados ao próprio usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Essa é a rota chamada quando o usuario logado quiser atualizar um dos seus produtos cadastrados.  
+**Lembre-se:** será possível atualizar **apenas** produtos associados ao próprio usuário logado, que será identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Deverá ser enviado o ID do produto no parâmetro de rota do endpoint.  
@@ -513,18 +505,17 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar um dos
   - imagem
 
 - **Resposta**  
-  Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint é possível utilizar os **_status codes_** 401 (Unauthorized) e 403 (Forbidden), além dos outros mais comuns que costumamos utilizar.
+  Em caso de **sucesso**, não é enviado conteúdo no corpo (body) da resposta.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que possui como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - Validar se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
-  - Validar os campos obrigatórios:
+- **FUNCIONALIDADES:**
+  - Valida se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
+  - Validação dos campos obrigatórios:
     - nome
     - quantidade
     - preco
     - descricao
-  - Atualizar o produto no banco de dados
+  - Atualiza o produto no banco de dados
 
 #### **Exemplo de requisição**
 
@@ -558,21 +549,20 @@ Essa é a rota que será chamada quando o usuario logado quiser atualizar um dos
 
 #### `DELETE` `/produtos/:id`
 
-Essa é a rota que será chamada quando o usuario logado quiser excluir um dos seus produtos cadastrados.  
-**Lembre-se:** Deverá ser possível excluir **apenas** produtos associados ao próprio usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Essa é a rota chamada quando o usuario logado quiser excluir um dos seus produtos cadastrados.  
+**Lembre-se:** será possível excluir **apenas** produtos associados ao próprio usuário logado, que será identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Deverá ser enviado o ID do produto no parâmetro de rota do endpoint.  
   O corpo (body) da requisição não deverá possuir nenhum conteúdo.
 
 - **Resposta**  
-  Em caso de **sucesso**, não deveremos enviar conteúdo no corpo (body) da resposta.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint é possível utilizar os **_status codes_** 401 (Unauthorized) e 403 (Forbidden), além dos outros mais comuns que costumamos utilizar.
+  Em caso de **sucesso**, não é enviado conteúdo no corpo (body) da resposta.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que possui como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**:
-  - Validar se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
-  - Excluir o produto no banco de dados.
+- **FUNCIONALIDADES:**:
+  - Valida se existe produto para o id enviado como parâmetro na rota e se este produto pertence ao usuário logado.
+  - Exclusão do produto no banco de dados.
 
 #### **Exemplo de requisição**
 
@@ -606,25 +596,24 @@ Essa é a rota que será chamada quando o usuario logado quiser excluir um dos s
 
 ## **EXTRA**
 
-**ATENÇÃO!:** Esta parte extra não é obrigatória e recomendamos que seja feita apenas quando terminar toda a parte obrigatória acima.
+**ATENÇÃO!:** Esta parte extra não era obrigatória, no entanto, também foi desenvolvida.
 
 ### **Filtrar produtos por categoria**
 
-Na funcionalidade de listagem de produtos do usuário logado (**GET /produtos**), deveremos incluir um parâmetro do tipo query **categoria** para que seja possível consultar apenas produtos de uma categoria específica.  
-**Lembre-se:** Deverão ser retornados **apenas** produtos associados ao usuário logado, que deverá ser identificado através do ID presente no token de validação.
+Na funcionalidade de listagem de produtos do usuário logado (**GET /produtos**), podemos incluir um parâmetro do tipo query **categoria** para poder consultar apenas produtos de uma categoria específica.  
+**Lembre-se:** serão retornados **apenas** produtos associados ao usuário logado, que será identificado através do ID presente no token de validação.
 
 - **Requisição**  
   Parâmetro opcional do tipo query **categoria**.  
   Não deverá possuir conteúdo no corpo (body) da requisição.
 
 - **Resposta**  
-  Em caso de **sucesso**, o corpo (body) da resposta deverá possuir um array dos objetos (produtos) encontrados.  
-  Em caso de **falha na validação**, a resposta deverá possuir **_status code_** apropriado, e em seu corpo (body) deverá possuir um objeto com uma propriedade **mensagem** que deverá possuir como valor um texto explicando o motivo da falha.  
-  **Dica:** neste endpoint podemos fazer uso do status code 401 (Unauthorized).
+  Em caso de **sucesso**, o corpo (body) da resposta possui um array dos objetos (produtos) encontrados.  
+  Em caso de **falha na validação**, a resposta possui um **_status code_** apropriado, e em seu corpo (body) um objeto com uma propriedade **mensagem** que possui como valor um texto explicando o motivo da falha.
 
-- **REQUISITOS OBRIGATÓRIOS**
-  - O usuário deverá ser identificado através do ID presente no token de validação
-  - O endpoint deverá responder com um array de todos os produtos associados ao usuário que sejam da categoria passada no parâmetro query. Caso não exista nenhum produto associado ao usuário deverá responder com array vazio.
+- **FUNCIONALIDADES:**
+  - O usuário é identificado através do ID presente no token de validação
+  - O endpoint responde com um array de todos os produtos associados ao usuário que sejam da categoria passada no parâmetro query. Caso não exista nenhum produto associado ao usuário sera retornado um array vazio.
 
 #### **Exemplo de requisição**
 
@@ -672,30 +661,5 @@ Na funcionalidade de listagem de produtos do usuário logado (**GET /produtos**)
   "mensagem": "Para acessar este recurso um token de autenticação válido deve ser enviado."
 }
 ```
-
----
-
-## **Aulas úteis:**
-
-- [Modelagem de Dados](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/15/09/2021/aula/286817a4-f5bd-44c5-a799-584ffd9a3335/a11d1306-a610-4522-a83e-4fde0d3ebdfa)
-- [A relação um para muitos](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/15/09/2021/aula/286817a4-f5bd-44c5-a799-584ffd9a3335/85adbb11-8081-4135-a13c-6dc5284ba5e5)
-- [Criando tabelas com relacionamentos](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/15/09/2021/aula/286817a4-f5bd-44c5-a799-584ffd9a3335/1fbb8761-9fd9-441c-96fd-08bac9f1fdf4)
-- [CRUD SQL](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/13/09/2021/aula/63e840be-432d-457b-99f5-cfa119008515/824d2698-ac2a-4d5f-840a-7b69384a7f94)
-- [Programação Assíncrona](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/04/08/2021/aula/fbeffa02-bf0d-49f1-927b-fb7b269f31b3/8bdff314-8386-43f8-8317-3cae52480be2)
-- [Funções async com await](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/04/08/2021/aula/fbeffa02-bf0d-49f1-927b-fb7b269f31b3/deb4c519-5b06-49d2-9245-6a4306b24b8a)
-- [Revisão Programação Assíncrona](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/06/08/2021/aula/9b680362-ee3b-45b0-9573-dc72427d7e37/)
-- [Conexão NodeJs com PostgreSQL](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/20/09/2021/aula/c5d2fbfa-d1cc-4b5d-a952-3f2d39f20013/25e45164-6f2e-4c83-a7f0-9a392c0f61e8)
-- [Configurando conexão com o banco](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/20/09/2021/aula/c5d2fbfa-d1cc-4b5d-a952-3f2d39f20013/328f07c0-bd88-488f-864e-3e401d4fca78)
-- [Executando comandos SQL a partir da API](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/20/09/2021/aula/c5d2fbfa-d1cc-4b5d-a952-3f2d39f20013/92f60ffe-15a4-4638-84f2-63ce25d02c08)
-- [Autenticação e Criptografia](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/22/09/2021/aula/416b67c0-7b88-4ec1-b1b3-e405414d227c/353d51ad-6ecf-4e2a-878e-b43d2d662d81)
-- [Revisão Módulo 3](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/27/09/2021/aula/653eb988-7f3d-490c-9649-d66cb76db7ae/4da79921-84a0-4dfc-b8ab-cc01cc723fbf)
-- [Login retornando token](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/27/09/2021/aula/653eb988-7f3d-490c-9649-d66cb76db7ae/c4fffddd-bb08-437b-97f6-453e4b2f213d)
-- [Filtro de autenticação lendo token do header](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/27/09/2021/aula/653eb988-7f3d-490c-9649-d66cb76db7ae/6480cf9b-d83a-4dc0-b0c3-6a9943b3b326)
-- [Utilizando recursos com token no header](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/27/09/2021/aula/653eb988-7f3d-490c-9649-d66cb76db7ae/3b009560-48dd-4d43-ba67-96ad4a6bfd52)
-- [Revisão ao vivo Módulo 3](https://plataforma.cubos.academy/curso/b0149c95-5986-4ac2-ac4c-a0f323353f26/data/29/09/2021/aula/3bc2d9c5-0f0e-4d8d-beee-17e2419c2212/)
-
----
-
-**LEMBRE-SE**: Feito é melhor que perfeito!!!
 
 ###### tags: `back-end` `módulo 3` `nodeJS` `PostgreSQL` `API REST` `desafio`
